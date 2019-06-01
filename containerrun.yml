@@ -1,0 +1,17 @@
+---
+- hosts: apache
+  tasks:
+  - name: upload the site directory to the docker host
+    synchronize: src=site dest=/tmp
+  - name: Create a apache container
+    docker_container:
+      name: ramapache
+      image: ramapa1
+      state: started
+      restart: yes
+      volumes:
+       - /tmp/site/data:/var/www/html
+      # - /tmp/site/data:/usr/share/nginx/html
+      ports:
+        - "8585:80"
+
